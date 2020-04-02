@@ -463,19 +463,20 @@ int main()
                     for(pozitie_coloana=0; pozitie_coloana< numar_coloane; pozitie_coloana++)
                     {
                         // "Evolutia celulor"
-                        if(matrice[pozitie_linie][pozitie_coloana]==2)
+                        switch (matrice[pozitie_linie][pozitie_coloana])
                         {
-                            matrice[pozitie_linie][pozitie_coloana]=1;
-                        }
-                        else if(matrice[pozitie_linie][pozitie_coloana]==3)
-                        {
-                            matrice[pozitie_linie][pozitie_coloana]=0;
+                        case 2:
+                            matrice[pozitie_linie][pozitie_coloana] = 1;
+                        case 1:
+                            populatie++;
+                            break;
+                        case 3:
+                            matrice[pozitie_linie][pozitie_coloana] = 0;
+                            break;
+                        default:
+                            break;
                         }
 
-                        if (matrice[pozitie_linie][pozitie_coloana] == 1)
-                        {
-                            populatie++;
-                        }
                         // END  "Evolutia celulor"
                     }
 
