@@ -131,28 +131,44 @@ int NumberOfLifes(int pozitie_linie, int pozitie_coloana, int numar_linii, int n
     return life;
 }
 
-void EvolutiaCelulelor(short** matrice, int pozitie_linie, int pozitie_coloana, int* populatie)
+void EvolutiaCelulelor(short** matrice, int numar_linii, int numar_coloane, int* populatie , int* maximpopulatie)
 {
-    if (populatie == NULL)
+    if (populatie == NULL || maximpopulatie == NULL)
     {
         return;
     }
 
-    // "Evolutia celulor"
-    switch (matrice[pozitie_linie][pozitie_coloana])
+    int varPopulatie = *populatie;
+    int maxVarPopulatie = *maximpopulatie;
+
+    for (int pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
+        for (int pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
+        {
+            // "Evolutia celulor"
+            switch (matrice[pozitie_linie][pozitie_coloana])
+            {
+            case 2:
+                matrice[pozitie_linie][pozitie_coloana] = 1;
+            case 1:
+                varPopulatie++;
+                break;
+            case 3:
+                matrice[pozitie_linie][pozitie_coloana] = 0;
+                break;
+            default:
+                break;
+            }
+            // END  "Evolutia celulor"
+        }
+
+
+    if (varPopulatie > maxVarPopulatie)
     {
-    case 2:
-        matrice[pozitie_linie][pozitie_coloana] = 1;
-    case 1:
-        (*populatie)++;
-        break;
-    case 3:
-        matrice[pozitie_linie][pozitie_coloana] = 0;
-        break;
-    default:
-        break;
+        maxVarPopulatie = populatie;
     }
-    // END  "Evolutia celulor"
+
+    *populatie = varPopulatie;
+    *maximpopulatie = maxVarPopulatie;
 }
 
 
@@ -215,18 +231,8 @@ int main()
             //END verificare_celula
 
             populatie = 0;
-            for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
-                for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
-                {
-                    EvolutiaCelulelor(matrice, pozitie_linie, pozitie_coloana, &populatie);
-                }
-
-            if (populatie > maximpopulatie)
-            {
-                maximpopulatie = populatie;
-            }
+            EvolutiaCelulelor(matrice, numar_linii, numar_coloane, &populatie, &maximpopulatie);
             //Modificarea gradului maxim de populatie
-
 
             Etape--; //Scaderea numarului de evolutii / K / Etape (cerute)
         }
@@ -358,15 +364,7 @@ int main()
                                 //Modificare in matrice pentru evoluatia celulor intr-o etapa
                             }
                     }
-                for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
-                    for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
-                    {
-                        EvolutiaCelulelor(matrice, pozitie_linie, pozitie_coloana, &populatie);
-                    }
-                if (populatie > maximpopulatie)
-                {
-                    maximpopulatie = populatie;
-                }
+                EvolutiaCelulelor(matrice, numar_linii, numar_coloane, &populatie, &maximpopulatie);
                 //Modificarea gradului maxim de populatie
 
                 Etape--;//Scaderea numarului de evolutii / K / Etape (cerute)
@@ -399,15 +397,7 @@ int main()
                                 //Modificare in matrice pentru evoluatia celulor intr-o etapa
                             }
                     }
-                for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
-                    for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
-                    {
-                        EvolutiaCelulelor(matrice, pozitie_linie, pozitie_coloana, &populatie);
-                    }
-                if (populatie > maximpopulatie)
-                {
-                    maximpopulatie = populatie;
-                }
+                EvolutiaCelulelor(matrice, numar_linii, numar_coloane, &populatie, &maximpopulatie);
                 //Modificarea gradului maxim de populatie
 
                 Etape--;//Scaderea numarului de evolutii / K / Etape (cerute)
@@ -448,17 +438,7 @@ int main()
                     }
                 //END verificare_celula
                 populatie = 0;
-                for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
-                    for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
-                    {
-                        EvolutiaCelulelor(matrice, pozitie_linie, pozitie_coloana, &populatie);
-                    }
-
-
-                if (populatie > maximpopulatie)
-                {
-                    maximpopulatie = populatie;
-                }
+                EvolutiaCelulelor(matrice, numar_linii, numar_coloane, &populatie, &maximpopulatie);
                 //Modificarea gradului maxim de populatie
 
                 Etape--;//Scaderea numarului de evolutii / K / Etape (cerute)
