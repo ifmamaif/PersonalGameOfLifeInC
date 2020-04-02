@@ -25,8 +25,9 @@ Restricții:
 
 */
 #include <stdio.h> // includerea biblioteci tip header "stdio.h"
+#include <stdlib.h>
 
-int verificareCelulaT0(int** matrice, int linie, int coloana)
+int verificareCelulaT0(char** matrice, int linie, int coloana)
 {
     if (matrice[linie][coloana] == 1 ||
         matrice[linie][coloana] == 3)
@@ -36,7 +37,20 @@ int verificareCelulaT0(int** matrice, int linie, int coloana)
     return 0;
 }
 
-int verificacaz1T(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, short** matrice)
+int verificacelulaP(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, char** matrice)
+{
+    if (pozitie_linie < 0 ||
+        pozitie_coloana < 0 ||
+        pozitie_linie >= numar_linii ||
+        pozitie_coloana >= numar_coloane)
+    {
+        return 0;
+    }
+
+    return verificareCelulaT0(matrice, pozitie_linie, pozitie_coloana);
+}   //END verificacelulaP()
+
+int verificacaz1T(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, char** matrice)
 {
     if (pozitie_coloana < 0 &&
         verificareCelulaT0(matrice,0,numar_coloane-1) == 1)
@@ -53,21 +67,8 @@ int verificacaz1T(int pozitie_linie, int pozitie_coloana, int numar_linii, int n
     return verificacelulaP(pozitie_linie, pozitie_coloana, numar_linii, numar_coloane, matrice);
 }
 
-int verificacelulaP(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, short** matrice)
-{
-    if (pozitie_linie < 0 ||
-        pozitie_coloana < 0 ||
-        pozitie_linie >= numar_linii ||
-        pozitie_coloana >= numar_coloane)
-    {
-        return 0;
-    }
 
-    return verificareCelulaT0(matrice, pozitie_linie, pozitie_coloana);
-}   //END verificacelulaP()
-
-
-int verificacelulaT(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, short** matrice)
+int verificacelulaT(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, char** matrice)
 {
     if (pozitie_linie < 0 && pozitie_coloana < 0)
     {
@@ -115,7 +116,7 @@ int verificacelulaT(int pozitie_linie, int pozitie_coloana, int numar_linii, int
 }   //END verificacelulaT()
 
 
-int NumberOfLifes(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, short matrice[1000][1000])
+int NumberOfLifes(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, char** matrice)
 {
 
     int life = 0;
@@ -130,7 +131,7 @@ int NumberOfLifes(int pozitie_linie, int pozitie_coloana, int numar_linii, int n
     return life;
 }
 
-void EvolutiaCelulelor(short** matrice, int numar_linii, int numar_coloane, int* populatie , int* maximpopulatie)
+void EvolutiaCelulelor(char** matrice, int numar_linii, int numar_coloane, int* populatie , int* maximpopulatie)
 {
     if (populatie == NULL || maximpopulatie == NULL)
     {
@@ -163,14 +164,14 @@ void EvolutiaCelulelor(short** matrice, int numar_linii, int numar_coloane, int*
 
     if (varPopulatie > maxVarPopulatie)
     {
-        maxVarPopulatie = populatie;
+        maxVarPopulatie = varPopulatie;
     }
 
     *populatie = varPopulatie;
     *maximpopulatie = maxVarPopulatie;
 }
 
-void KillOverPopulatedCells(short** matrice, int numar_linii, int numar_coloane)
+void KillOverPopulatedCells(char** matrice, int numar_linii, int numar_coloane)
 {
     for (int pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
         for (int pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
@@ -183,7 +184,7 @@ void KillOverPopulatedCells(short** matrice, int numar_linii, int numar_coloane)
 }
 
 
-void VerificareaPosibileiCeluleViiMoarte(short** matrice , int pozitie_linie,int pozitie_coloana, int life)
+void VerificareaPosibileiCeluleViiMoarte(char** matrice , int pozitie_linie,int pozitie_coloana, int life)
 {
     //Verificarea posibilei celule noi
     if (life == 3 && matrice[pozitie_linie][pozitie_coloana] == 0)
@@ -202,7 +203,7 @@ void VerificareaPosibileiCeluleViiMoarte(short** matrice , int pozitie_linie,int
     }
 }
 
-void ReprezentarePlanara(int* Etape,short** matrice,int* maximpopulatie,int numar_linii,int numar_coloane)
+void ReprezentarePlanara(int* Etape,char** matrice,int* maximpopulatie,int numar_linii,int numar_coloane)
 {
     if (Etape == NULL)
         return;
@@ -232,7 +233,7 @@ void ReprezentarePlanara(int* Etape,short** matrice,int* maximpopulatie,int numa
     }
 }
 
-void ReprezentareaToroidala(int* Etape, short** matrice, int* maximpopulatie, int numar_linii, int numar_coloane)
+void ReprezentareaToroidala(int* Etape, char** matrice, int* maximpopulatie, int numar_linii, int numar_coloane)
 {
     int populatie = 0;
     int pozitie_linie, pozitie_coloana;
@@ -349,7 +350,7 @@ void ReprezentareaToroidala(int* Etape, short** matrice, int* maximpopulatie, in
                     life += verificacelulaT(pozitie_linie + 1, pozitie_coloana + 1, numar_linii, numar_coloane, matrice);
                     VerificareaPosibileiCeluleViiMoarte(matrice, pozitie_linie, pozitie_coloana, life);
                 }
-            EvolutiaCelulelor(matrice, numar_linii, numar_coloane, &populatie, &maximpopulatie);
+            EvolutiaCelulelor(matrice, numar_linii, numar_coloane, &populatie, maximpopulatie);
             //Modificarea gradului maxim de populatie
 
             etapeEvolutie--;//Scaderea numarului de evolutii / K / Etape (cerute)
@@ -378,7 +379,7 @@ void ReprezentareaToroidala(int* Etape, short** matrice, int* maximpopulatie, in
                 }
             //END verificare_celula
             populatie = 0;
-            EvolutiaCelulelor(matrice, numar_linii, numar_coloane, &populatie, &maximpopulatie);
+            EvolutiaCelulelor(matrice, numar_linii, numar_coloane, &populatie, maximpopulatie);
             //Modificarea gradului maxim de populatie
 
             etapeEvolutie--;//Scaderea numarului de evolutii / K / Etape (cerute)
@@ -391,15 +392,19 @@ int main()
     int numar_linii, numar_coloane, Etape, maximpopulatie = 0;// declararea variabilelor cerintei numar linii,generatiile de simulari , numar biti, matricea , maxim populatie
     int pozitie_linie, pozitie_coloana;
     short int life = 0; // variabile auxiliare pentru parcurgerea in matrice , numar populatie , numar vecini
-    short int matrice[1000][1000];
+    char** matrice;
 
     //  BEGIN citeste_variabile
-    scanf("%c", &Tip_plan);
-    scanf("%d %d %d", &numar_linii, &numar_coloane, &Etape);
+    scanf_s("%c",&Tip_plan,1);
+    scanf_s("%d %d %d", &numar_linii, &numar_coloane, &Etape);
+    matrice = (char**)malloc(sizeof(char*) * numar_linii);
+    for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
+        matrice[pozitie_linie] = malloc(sizeof(char) * numar_coloane);
+
     for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
         for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
         {
-            scanf("%d", &matrice[pozitie_linie][pozitie_coloana]);
+            scanf_s("%c", &matrice[pozitie_linie][pozitie_coloana],1);
         }
     // END citeste_variabile
 
@@ -415,6 +420,7 @@ int main()
             {
                 maximpopulatie++;
             }
+
     // End Calculare Populatia initiala
     if (Tip_plan[0] == 'P' || Tip_plan[0] == 'p')
     {
@@ -434,6 +440,9 @@ int main()
     }
     // END Afisare
     printf("Gradul maxim de populatie este %.3f%c !", (float)(maximpopulatie * 100) / (numar_linii * numar_coloane), '%');
-
+    
+    for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
+        free(matrice[pozitie_linie]);
+    free(matrice);
     return 0;
 }   // END main()
