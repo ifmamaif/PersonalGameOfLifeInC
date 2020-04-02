@@ -85,7 +85,6 @@ int verificacelulaT(int pozitie_linie, int pozitie_coloana, int numar_linii, int
         return verificareCelulaT0(matrice, numar_linii - 1, 0);
     }
 
-
     if (pozitie_linie >= numar_linii && pozitie_coloana < 0)
     {
         return verificareCelulaT0(matrice, 0, numar_coloane - 1);
@@ -114,7 +113,7 @@ int verificacelulaT(int pozitie_linie, int pozitie_coloana, int numar_linii, int
     }
 
     return verificareCelulaT0(matrice, pozitie_linie, pozitie_coloana);
-}//END verificacelulaT()
+}   //END verificacelulaT()
 
 
 int NumberOfLifes(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, short matrice[1000][1000])
@@ -148,14 +147,19 @@ int main()
     scanf("%c",&Tip_plan);
     scanf("%d %d %d",&numar_linii,&numar_coloane,&Etape);
     for(pozitie_linie=0; pozitie_linie<numar_linii; pozitie_linie++)
-        for(pozitie_coloana=0; pozitie_coloana<numar_coloane; pozitie_coloana++)
-            scanf("%d",&matrice[pozitie_linie][pozitie_coloana]);
+        for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
+        {
+            scanf("%d", &matrice[pozitie_linie][pozitie_coloana]);
+        }
     // END citeste_variabile
 
     // Calculare Populatia initiala
     for(pozitie_linie=0; pozitie_linie< numar_linii; pozitie_linie++)
         for(pozitie_coloana=0; pozitie_coloana< numar_coloane; pozitie_coloana++)
-            if(matrice[pozitie_linie][pozitie_coloana]==1)maximpopulatie++;
+            if (matrice[pozitie_linie][pozitie_coloana] == 1)
+            {
+                maximpopulatie++;
+            }
     // End Calculare Populatia initiala
     if(Tip_plan[0] == 'P' || Tip_plan[0] == 'p')
     {
@@ -199,7 +203,10 @@ int main()
                     {
                         matrice[pozitie_linie][pozitie_coloana]=0;
                     }
-                    if(matrice[pozitie_linie][pozitie_coloana]==1)populatie++;
+                    if (matrice[pozitie_linie][pozitie_coloana] == 1)
+                    {
+                        populatie++;
+                    }
                     // END  "Evolutia celulor"
                 }
 
@@ -216,9 +223,18 @@ int main()
     else if(Tip_plan[0] == 'T' || Tip_plan[0] == 't')
     {
         printf("\n Reprezentare Toroidala! \n");
-        if(numar_coloane == 1 && numar_linii == 1 && Etape>0)matrice[0][0];
-        else if(numar_coloane == 1 && numar_linii == 2 && Etape>0)matrice[0][0]=matrice[1][0]=0;
-        else if(numar_coloane == 2 && numar_linii == 1 && Etape>0)matrice[0][0]=matrice[0][1]=0;
+        if (numar_coloane == 1 && numar_linii == 1 && Etape > 0)
+        {
+            matrice[0][0];
+        }
+        else if (numar_coloane == 1 && numar_linii == 2 && Etape > 0)
+        {
+            matrice[0][0] = matrice[1][0] = 0;
+        }
+        else if (numar_coloane == 2 && numar_linii == 1 && Etape > 0)
+        {
+            matrice[0][0] = matrice[0][1] = 0;
+        }
         else if(numar_coloane == 1)
         {
             while(Etape>0)
@@ -228,12 +244,17 @@ int main()
                     life=0;
                     life += verificacaz1T(pozitie_linie-1,0,numar_linii,numar_coloane,matrice);
                     life += verificacaz1T(pozitie_linie+1,0,numar_linii,numar_coloane,matrice);
-                    if(life<2)
-                        matrice[pozitie_linie][0]=3;
+                    if (life < 2)
+                    {
+                        matrice[pozitie_linie][0] = 3;
+                    }
                 }
                 for(pozitie_linie=0; pozitie_linie< numar_linii; pozitie_linie++)
                 {
-                    if(matrice[pozitie_linie][0]==3)matrice[pozitie_linie][0]=0;
+                    if (matrice[pozitie_linie][0] == 3)
+                    {
+                        matrice[pozitie_linie][0] = 0;
+                    }
                 }
                 Etape--;
             }
@@ -247,12 +268,17 @@ int main()
                     life=0;
                     life += verificacaz1T(0,pozitie_coloana-1,numar_linii,numar_coloane,matrice);
                     life += verificacaz1T(0,pozitie_coloana+1,numar_linii,numar_coloane,matrice);
-                    if(life<2)
-                        matrice[0][pozitie_coloana]=3;
+                    if (life < 2)
+                    {
+                        matrice[0][pozitie_coloana] = 3;
+                    }
                 }
                 for(pozitie_coloana=0; pozitie_coloana< numar_coloane; pozitie_coloana++)
                 {
-                    if(matrice[0][pozitie_coloana]==3)matrice[0][pozitie_coloana]=0;
+                    if (matrice[0][pozitie_coloana] == 3)
+                    {
+                        matrice[0][pozitie_coloana] = 0;
+                    }
                 }
                 Etape--;
             }
@@ -332,9 +358,15 @@ int main()
                         {
                             matrice[pozitie_linie][pozitie_coloana]=0;
                         }
-                        if(matrice[pozitie_linie][pozitie_coloana]==1)populatie++;
+                        if (matrice[pozitie_linie][pozitie_coloana] == 1)
+                        {
+                            populatie++;
+                        }
                     }
-                if(populatie>maximpopulatie)maximpopulatie=populatie;
+                if (populatie > maximpopulatie)
+                {
+                    maximpopulatie = populatie;
+                }
                 //Modificarea gradului maxim de populatie
 
                 Etape--;//Scaderea numarului de evolutii / K / Etape (cerute)
@@ -378,9 +410,15 @@ int main()
                         {
                             matrice[pozitie_linie][pozitie_coloana]=0;
                         }
-                        if(matrice[pozitie_linie][pozitie_coloana]==1)populatie++;
+                        if (matrice[pozitie_linie][pozitie_coloana] == 1)
+                        {
+                            populatie++;
+                        }
                     }
-                if(populatie>maximpopulatie)maximpopulatie=populatie;
+                if (populatie > maximpopulatie)
+                {
+                    maximpopulatie = populatie;
+                }
                 //Modificarea gradului maxim de populatie
 
                 Etape--;//Scaderea numarului de evolutii / K / Etape (cerute)
@@ -403,6 +441,7 @@ int main()
                         life += verificacelulaT(pozitie_linie+1,pozitie_coloana-1,numar_linii,numar_coloane,matrice);
                         life += verificacelulaT(pozitie_linie+1,pozitie_coloana,numar_linii,numar_coloane,matrice);
                         life += verificacelulaT(pozitie_linie+1,pozitie_coloana+1,numar_linii,numar_coloane,matrice);
+
                         //END Aflarea vecinilor
                         if(life == 3 && matrice[pozitie_linie][pozitie_coloana]==0)
                         {
@@ -433,7 +472,10 @@ int main()
                             matrice[pozitie_linie][pozitie_coloana]=0;
                         }
 
-                        if(matrice[pozitie_linie][pozitie_coloana]==1)populatie++;
+                        if (matrice[pozitie_linie][pozitie_coloana] == 1)
+                        {
+                            populatie++;
+                        }
                         // END  "Evolutia celulor"
                     }
 
