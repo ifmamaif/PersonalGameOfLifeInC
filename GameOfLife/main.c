@@ -171,6 +171,17 @@ void EvolutiaCelulelor(short** matrice, int numar_linii, int numar_coloane, int*
     *maximpopulatie = maxVarPopulatie;
 }
 
+void KillOverPopulatedCells(short** matrice, int numar_linii, int numar_coloane)
+{
+    for (int pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
+        for (int pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
+        {
+            if (matrice[pozitie_linie][pozitie_coloana] == 3)
+            {
+                matrice[pozitie_linie][pozitie_coloana] = 0;
+            }
+        }
+}
 
 int main()
 {
@@ -266,13 +277,7 @@ int main()
                         matrice[pozitie_linie][0] = 3;
                     }
                 }
-                for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
-                {
-                    if (matrice[pozitie_linie][0] == 3)
-                    {
-                        matrice[pozitie_linie][0] = 0;
-                    }
-                }
+                KillOverPopulatedCells(matrice, numar_linii, numar_coloane);
                 Etape--;
             }
         }
@@ -290,13 +295,7 @@ int main()
                         matrice[0][pozitie_coloana] = 3;
                     }
                 }
-                for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
-                {
-                    if (matrice[0][pozitie_coloana] == 3)
-                    {
-                        matrice[0][pozitie_coloana] = 0;
-                    }
-                }
+                KillOverPopulatedCells(matrice, numar_linii, numar_coloane);
                 Etape--;
             }
         }
