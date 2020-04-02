@@ -131,6 +131,30 @@ int NumberOfLifes(int pozitie_linie, int pozitie_coloana, int numar_linii, int n
     return life;
 }
 
+void EvolutiaCelulelor(short** matrice, int pozitie_linie, int pozitie_coloana, int* populatie)
+{
+    if (populatie == NULL)
+    {
+        return;
+    }
+
+    // "Evolutia celulor"
+    switch (matrice[pozitie_linie][pozitie_coloana])
+    {
+    case 2:
+        matrice[pozitie_linie][pozitie_coloana] = 1;
+    case 1:
+        (*populatie)++;
+        break;
+    case 3:
+        matrice[pozitie_linie][pozitie_coloana] = 0;
+        break;
+    default:
+        break;
+    }
+    // END  "Evolutia celulor"
+}
+
 
 int main()
 {
@@ -194,20 +218,7 @@ int main()
             for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
                 for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
                 {
-                    // "Evolutia celulor"
-                    if (matrice[pozitie_linie][pozitie_coloana] == 2)
-                    {
-                        matrice[pozitie_linie][pozitie_coloana] = 1;
-                    }
-                    else if (matrice[pozitie_linie][pozitie_coloana] == 3)
-                    {
-                        matrice[pozitie_linie][pozitie_coloana] = 0;
-                    }
-                    if (matrice[pozitie_linie][pozitie_coloana] == 1)
-                    {
-                        populatie++;
-                    }
-                    // END  "Evolutia celulor"
+                    EvolutiaCelulelor(matrice, pozitie_linie, pozitie_coloana, &populatie);
                 }
 
             if (populatie > maximpopulatie)
@@ -350,18 +361,7 @@ int main()
                 for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
                     for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
                     {
-                        if (matrice[pozitie_linie][pozitie_coloana] == 2)
-                        {
-                            matrice[pozitie_linie][pozitie_coloana] = 1;
-                        }
-                        else if (matrice[pozitie_linie][pozitie_coloana] == 3)
-                        {
-                            matrice[pozitie_linie][pozitie_coloana] = 0;
-                        }
-                        if (matrice[pozitie_linie][pozitie_coloana] == 1)
-                        {
-                            populatie++;
-                        }
+                        EvolutiaCelulelor(matrice, pozitie_linie, pozitie_coloana, &populatie);
                     }
                 if (populatie > maximpopulatie)
                 {
@@ -402,18 +402,7 @@ int main()
                 for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
                     for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
                     {
-                        if (matrice[pozitie_linie][pozitie_coloana] == 2)
-                        {
-                            matrice[pozitie_linie][pozitie_coloana] = 1;
-                        }
-                        else if (matrice[pozitie_linie][pozitie_coloana] == 3)
-                        {
-                            matrice[pozitie_linie][pozitie_coloana] = 0;
-                        }
-                        if (matrice[pozitie_linie][pozitie_coloana] == 1)
-                        {
-                            populatie++;
-                        }
+                        EvolutiaCelulelor(matrice, pozitie_linie, pozitie_coloana, &populatie);
                     }
                 if (populatie > maximpopulatie)
                 {
@@ -462,22 +451,7 @@ int main()
                 for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
                     for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
                     {
-                        // "Evolutia celulor"
-                        switch (matrice[pozitie_linie][pozitie_coloana])
-                        {
-                        case 2:
-                            matrice[pozitie_linie][pozitie_coloana] = 1;
-                        case 1:
-                            populatie++;
-                            break;
-                        case 3:
-                            matrice[pozitie_linie][pozitie_coloana] = 0;
-                            break;
-                        default:
-                            break;
-                        }
-
-                        // END  "Evolutia celulor"
+                        EvolutiaCelulelor(matrice, pozitie_linie, pozitie_coloana, &populatie);
                     }
 
 
