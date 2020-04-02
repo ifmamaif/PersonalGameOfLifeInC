@@ -26,7 +26,6 @@ Restricții:
 */
 #include <stdio.h> // includerea biblioteci tip header "stdio.h"
 
-
 int verificareCelulaT0(int** matrice, int linie, int coloana)
 {
     if (matrice[linie][coloana] == 1 ||
@@ -183,6 +182,26 @@ void KillOverPopulatedCells(short** matrice, int numar_linii, int numar_coloane)
         }
 }
 
+
+void VerificareaPosibileiCeluleViiMoarte(short** matrice , int pozitie_linie,int pozitie_coloana, int life)
+{
+    //Verificarea posibilei celule noi
+    if (life == 3 && matrice[pozitie_linie][pozitie_coloana] == 0)
+    {
+        // Modificare in matrice pentru evolutia celulor intr-o etapa
+        matrice[pozitie_linie][pozitie_coloana] = 2;
+       
+    }
+    //Verificarea posibilei celule moarte
+    else if (matrice[pozitie_linie][pozitie_coloana] == 1 &&
+        (life < 2 || life >3))
+    {
+
+        //Modificare in matrice pentru evoluatia celulor intr-o etapa
+        matrice[pozitie_linie][pozitie_coloana] = 3;
+    }
+}
+
 int main()
 {
     char Tip_plan[1]; // tipul de problema/afisare ; Adica daca se face reprezentarea tip plan sau toroidala
@@ -224,20 +243,7 @@ int main()
                     //Aflarea vecinilor
                     life = NumberOfLifes(pozitie_linie, pozitie_coloana, numar_linii, numar_coloane, matrice);
                     //END Aflarea vecinilor
-                    if (life == 3 && matrice[pozitie_linie][pozitie_coloana] == 0)
-                    {
-                        //Verificarea posibilei celule noi
-                        matrice[pozitie_linie][pozitie_coloana] = 2;
-                        // Modificare in matrice pentru pentru evolutia celulor intr-o etapa
-                    }
-
-                    if (matrice[pozitie_linie][pozitie_coloana] == 1)
-                        if (life < 2 || life >3)
-                        {
-                            //Verificarea posibilei celule moarte
-                            matrice[pozitie_linie][pozitie_coloana] = 3;
-                            //Modificare in matrice pentru evoluatia celulor intr-o etapa
-                        }
+                    VerificareaPosibileiCeluleViiMoarte(matrice,pozitie_linie,pozitie_coloana,life);
                 }
             //END verificare_celula
 
@@ -307,19 +313,7 @@ int main()
                     for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
                     {
                         life = NumberOfLifes(pozitie_linie, pozitie_coloana, numar_linii, numar_coloane, matrice);
-                        if (life == 3 && matrice[pozitie_linie][pozitie_coloana] == 0)
-                        {
-                            //Verificarea posibilei celule noi
-                            matrice[pozitie_linie][pozitie_coloana] = 2;
-                            // Modificare in matrice pentru pentru evolutia celulor intr-o etapa
-                        }
-                        else if (matrice[pozitie_linie][pozitie_coloana] == 1)
-                            if (life < 2 || life >3)
-                            {
-                                //Verificarea posibilei celule moarte
-                                matrice[pozitie_linie][pozitie_coloana] = 3;
-                                //Modificare in matrice pentru evoluatia celulor intr-o etapa
-                            }
+                        VerificareaPosibileiCeluleViiMoarte(matrice,pozitie_linie,pozitie_coloana,life);
                     }
                 for (pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
                     for (pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
@@ -349,19 +343,7 @@ int main()
                         life += verificacelulaT(pozitie_linie, pozitie_coloana + 1, numar_linii, numar_coloane, matrice);
                         life += verificacelulaT(pozitie_linie + 1, pozitie_coloana, numar_linii, numar_coloane, matrice);
                         life += verificacelulaT(pozitie_linie + 1, pozitie_coloana + 1, numar_linii, numar_coloane, matrice);
-                        if (life == 3 && matrice[pozitie_linie][pozitie_coloana] == 0)
-                        {
-                            //Verificarea posibilei celule noi
-                            matrice[pozitie_linie][pozitie_coloana] = 2;
-                            // Modificare in matrice pentru pentru evolutia celulor intr-o etapa
-                        }
-                        else if (matrice[pozitie_linie][pozitie_coloana] == 1)
-                            if (life < 2 || life >3)
-                            {
-                                //Verificarea posibilei celule moarte
-                                matrice[pozitie_linie][pozitie_coloana] = 3;
-                                //Modificare in matrice pentru evoluatia celulor intr-o etapa
-                            }
+                        VerificareaPosibileiCeluleViiMoarte(matrice, pozitie_linie, pozitie_coloana, life);
                     }
                 EvolutiaCelulelor(matrice, numar_linii, numar_coloane, &populatie, &maximpopulatie);
                 //Modificarea gradului maxim de populatie
@@ -382,19 +364,7 @@ int main()
                         life += verificacelulaT(pozitie_linie + 1, pozitie_coloana - 1, numar_linii, numar_coloane, matrice);
                         life += verificacelulaT(pozitie_linie + 1, pozitie_coloana, numar_linii, numar_coloane, matrice);
                         life += verificacelulaT(pozitie_linie + 1, pozitie_coloana + 1, numar_linii, numar_coloane, matrice);
-                        if (life == 3 && matrice[pozitie_linie][pozitie_coloana] == 0)
-                        {
-                            //Verificarea posibilei celule noi
-                            matrice[pozitie_linie][pozitie_coloana] = 2;
-                            // Modificare in matrice pentru pentru evolutia celulor intr-o etapa
-                        }
-                        else if (matrice[pozitie_linie][pozitie_coloana] == 1)
-                            if (life < 2 || life >3)
-                            {
-                                //Verificarea posibilei celule moarte
-                                matrice[pozitie_linie][pozitie_coloana] = 3;
-                                //Modificare in matrice pentru evoluatia celulor intr-o etapa
-                            }
+                        VerificareaPosibileiCeluleViiMoarte(matrice, pozitie_linie, pozitie_coloana, life);
                     }
                 EvolutiaCelulelor(matrice, numar_linii, numar_coloane, &populatie, &maximpopulatie);
                 //Modificarea gradului maxim de populatie
@@ -421,19 +391,7 @@ int main()
                         life += verificacelulaT(pozitie_linie + 1, pozitie_coloana + 1, numar_linii, numar_coloane, matrice);
 
                         //END Aflarea vecinilor
-                        if (life == 3 && matrice[pozitie_linie][pozitie_coloana] == 0)
-                        {
-                            //Verificarea posibilei celule noi
-                            matrice[pozitie_linie][pozitie_coloana] = 2;
-                            // Modificare in matrice pentru pentru evolutia celulor intr-o etapa
-                        }
-                        else if (matrice[pozitie_linie][pozitie_coloana] == 1)
-                            if (life < 2 || life >3)
-                            {
-                                //Verificarea posibilei celule moarte
-                                matrice[pozitie_linie][pozitie_coloana] = 3;
-                                //Modificare in matrice pentru evoluatia celulor intr-o etapa
-                            }
+                        VerificareaPosibileiCeluleViiMoarte(matrice, pozitie_linie, pozitie_coloana, life);
                     }
                 //END verificare_celula
                 populatie = 0;
