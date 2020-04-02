@@ -59,4 +59,5 @@ sysinfo.txt
 crashlytics-build.properties
 
 # Ignore Debug directory
-.Debug/
+/[Dd]ebug/
+/GameOfLife/[Dd]ebug/
