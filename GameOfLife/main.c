@@ -27,47 +27,6 @@ Restricții:
 #include <stdio.h> // includerea biblioteci tip header "stdio.h"
 
 
-
-int verificacaz1T(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, short** matrice)
-{
-    if (pozitie_coloana < 0 &&
-        matrice[0][numar_coloane - 1] == 1 ||
-        matrice[0][numar_coloane - 1] == 3)
-    {
-        return 1;
-    }
-
-    if (pozitie_coloana > (numar_coloane - 1) &&
-        matrice[0][0] == 1 ||
-        matrice[0][0] == 3)
-    {
-        return 1;
-    }
-
-    if (pozitie_linie < 0 ||
-        pozitie_coloana < 0 ||
-        pozitie_linie >= numar_linii ||
-        pozitie_coloana >= numar_coloane)
-    {
-        return 0;
-    }
-
-    if (matrice[pozitie_linie][pozitie_coloana] == 1 ||
-        matrice[pozitie_linie][pozitie_coloana] == 3)
-    {
-        return 1;
-    }
-
-    return 0;
-}
-
-int verificacelulaP(int pozitie_linie,int pozitie_coloana,int numar_linii,int numar_coloane,short** matrice)
-{
-    if(pozitie_linie<0 || pozitie_coloana<0 || pozitie_linie>=numar_linii || pozitie_coloana>=numar_coloane)return 0;
-    else if(matrice[pozitie_linie][pozitie_coloana]==1 || matrice[pozitie_linie][pozitie_coloana]==3) return 1;
-    return 0;
-}//END verificacelulaP()
-
 int verificareCelulaT0(int** matrice, int linie, int coloana)
 {
     if (matrice[linie][coloana] == 1 ||
@@ -76,8 +35,38 @@ int verificareCelulaT0(int** matrice, int linie, int coloana)
         return 1;
     }
     return 0;
-
 }
+
+int verificacaz1T(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, short** matrice)
+{
+    if (pozitie_coloana < 0 &&
+        verificareCelulaT0(matrice,0,numar_coloane-1) == 1)
+    {
+        return 1;
+    }
+
+    if (pozitie_coloana > (numar_coloane - 1) &&
+       verificareCelulaT0(matrice,0,0) == 1)
+    {
+        return 1;
+    }
+
+    return verificacelulaP(pozitie_linie, pozitie_coloana, numar_linii, numar_coloane, matrice);
+}
+
+int verificacelulaP(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, short** matrice)
+{
+    if (pozitie_linie < 0 ||
+        pozitie_coloana < 0 ||
+        pozitie_linie >= numar_linii ||
+        pozitie_coloana >= numar_coloane)
+    {
+        return 0;
+    }
+
+    return verificareCelulaT0(matrice, pozitie_linie, pozitie_coloana);
+}   //END verificacelulaP()
+
 
 int verificacelulaT(int pozitie_linie, int pozitie_coloana, int numar_linii, int numar_coloane, short** matrice)
 {
