@@ -138,7 +138,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="common.c" />
+    <ClCompile Include="newImplementation.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="oldImplementation.c" />
+    <ClCompile Include="planar.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h" />
+    <ClInclude Include="newImplementation.h" />
+    <ClInclude Include="oldImplementation.h" />
+    <ClInclude Include="planar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
