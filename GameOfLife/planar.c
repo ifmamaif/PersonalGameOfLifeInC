@@ -1,7 +1,7 @@
 #include "planar.h"
 #include "common.h"
 
-void VerificaRamaSusPlanar2x2(char** matrice, int linii, int coloane)
+void VerificaRamaSusPlanar2x2(int** matrice, int linii, int coloane)
 {
     int life = VerificaCelula(matrice, 0, 1);
     life += VerificaCelula(matrice, 1, 0);
@@ -14,7 +14,7 @@ void VerificaRamaSusPlanar2x2(char** matrice, int linii, int coloane)
     VerificaViata(matrice, 0, 1, life);
 }
 
-void VerificaRamaSusPlanarOLinie(char** matrice, int linii, int coloane)
+void VerificaRamaSusPlanarOLinie(int** matrice, int linii, int coloane)
 {
     // garantat este mai mult de o coloana , altfel s-ar fi apelat VerificaRamaSusPlanarOColoana
 
@@ -32,12 +32,12 @@ void VerificaRamaSusPlanarOLinie(char** matrice, int linii, int coloane)
     VerificaViata(matrice, 0, coloane - 1, 0);
 }
 
-void VerificaRamaSusPlanarOColoana(char** matrice, int linii, int coloane)
+void VerificaRamaSusPlanarOColoana(int** matrice, int linii, int coloane)
 {
     VerificaViata(matrice, 0, 0, 0);
 }
 
-void VerificaRamaSusPlanar(char** matrice, int linii, int coloane)
+void VerificaRamaSusPlanar(int** matrice, int linii, int coloane)
 {
     // garantat este mai mult de o linie , altfel s-ar fi apelat VerficaRamaSusPlanarOLinie
     // garantat este mai mult de o coloana , altfel s-ar fi apelat VerificaRamaSusPlanarOColoana
@@ -65,7 +65,7 @@ void VerificaRamaSusPlanar(char** matrice, int linii, int coloane)
     VerificaViata(matrice, 0, coloane - 1, life);
 }
 
-void VerificaRamaDreaptaPlanar2x2(char** matrice, int linii, int coloane)
+void VerificaRamaDreaptaPlanar2x2(int** matrice, int linii, int coloane)
 {
     int life = VerificaCelula(matrice, 0, 0);
     life += VerificaCelula(matrice, 0, 1);
@@ -73,7 +73,7 @@ void VerificaRamaDreaptaPlanar2x2(char** matrice, int linii, int coloane)
     VerificaViata(matrice, 1, 1, life);
 }
 
-void VerificaRamaDreaptaPlanarOColoana(char** matrice, int linii, int coloane)
+void VerificaRamaDreaptaPlanarOColoana(int** matrice, int linii, int coloane)
 {
     // garantat avem mai multe linii , atlfel s-ar fi apelat nimic
     int life;
@@ -88,7 +88,7 @@ void VerificaRamaDreaptaPlanarOColoana(char** matrice, int linii, int coloane)
     VerificaViata(matrice, linii - 1, 0, 0);
 }
 
-void VerificaRamaDreaptaPlanar(char** matrice, int linii, int coloane)
+void VerificaRamaDreaptaPlanar(int** matrice, int linii, int coloane)
 {
     int life;
     for (int i = 1; i < linii - 1; i++)
@@ -107,7 +107,7 @@ void VerificaRamaDreaptaPlanar(char** matrice, int linii, int coloane)
     VerificaViata(matrice, linii - 1, coloane - 1, life);
 }
 
-void VerificaRamaJosPlanar2x2(char** matrice, int linii, int coloane)
+void VerificaRamaJosPlanar2x2(int** matrice, int linii, int coloane)
 {
     int life = VerificaCelula(matrice, 0, 0);
     life += VerificaCelula(matrice, 0, 1);
@@ -115,7 +115,7 @@ void VerificaRamaJosPlanar2x2(char** matrice, int linii, int coloane)
     VerificaViata(matrice, 1, 0, life);
 }
 
-void VerificaRamaJosPlanar(char** matrice, int linii, int coloane)
+void VerificaRamaJosPlanar(int** matrice, int linii, int coloane)
 {
     int life = VerificaCelula(matrice, linii - 2, 0);
     life += VerificaCelula(matrice, linii - 2, 1);
@@ -133,7 +133,7 @@ void VerificaRamaJosPlanar(char** matrice, int linii, int coloane)
     }
 }
 
-void VerificaRamaStangaPlanar(char** matrice, int linii, int coloane)
+void VerificaRamaStangaPlanar(int** matrice, int linii, int coloane)
 {
     int life;
     for (int i = 1; i < linii - 1; i++)

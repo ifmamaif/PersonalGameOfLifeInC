@@ -33,7 +33,7 @@ Restricții:
 #include "common.h"
 #include "planar.h"
 
-void RuleazaSimulare(char** matrice, int numar_linii, int numar_coloane, int etape, Simulare simulare)
+void RuleazaSimulare(int** matrice, int numar_linii, int numar_coloane, int etape, Simulare simulare,int afisareIteratie,FILE* out)
 {
     if (numar_linii < 1 ||
         numar_coloane < 1 ||
@@ -50,20 +50,20 @@ void RuleazaSimulare(char** matrice, int numar_linii, int numar_coloane, int eta
     }
     if (numar_coloane == 1 && numar_linii == 2)
     {
-        matrice[0][0] = matrice[1][0] = 0;
+        matrice[0][0] = matrice[1][0] = CelulaMoarta;
         return;
     }
     if (numar_coloane == 2 && numar_linii == 1)
     {
-        matrice[0][0] = matrice[0][1] = 0;
+        matrice[0][0] = matrice[0][1] = CelulaMoarta;
         return;
     }
 
-    void (*verificaSus) (char**, int, int);
-    void (*verificaDreapta) (char**, int, int);
-    void (*verificaJos) (char**, int, int);
-    void (*verificaStanga) (char**, int, int);
-    void (*verificaCentru) (char**, int, int);
+    void (*verificaSus) (int**, int, int);
+    void (*verificaDreapta) (int**, int, int);
+    void (*verificaJos) (int**, int, int);
+    void (*verificaStanga) (int**, int, int);
+    void (*verificaCentru) (int**, int, int);
 
     if (numar_linii == 2 && numar_coloane == 2)
     {
@@ -124,38 +124,68 @@ void RuleazaSimulare(char** matrice, int numar_linii, int numar_coloane, int eta
         verificaCentru(matrice, numar_linii, numar_coloane);
 
         PregatesteUrmatoareaSimulare(matrice, numar_linii, numar_coloane);
-
+        
+        if(afisareIteratie > 0)
+            AfisareMatrice(matrice, numar_linii, numar_coloane, out);
+        
         etape--;
     }
 }
 
-int RunNewImplementation(int argc, char** argv)
+Simulare ReadTipSimulare(char value)
+{
+    switch (value)
+    {
+    case 'p':
+    case 'P':
+        return Planar;
+    case 't':
+    case 'T':
+        return Tiroidala;
+    default:
+        printf("Tip plan invalid\n");
+        return Nimic;
+    }
+}
+
+int** NewMatrice(int linii, int coloane)
+{
+    int** matrice = (int**)malloc(sizeof(int*) * linii);
+    for (int pozitie_linie = 0; pozitie_linie < linii; pozitie_linie++)
+        matrice[pozitie_linie] = (int*)malloc(sizeof(int) * coloane);
+
+    return matrice;
+}
+
+void FreeMatrice(int**matrice,int linii)
+{
+    for (int pozitie_linie = 0; pozitie_linie < linii; pozitie_linie++)
+        free(matrice[pozitie_linie]);
+    free(matrice);
+}
+
+int RunNewImplementation(int argc,const char** const argv)
 {
     Simulare Tip_plan; // tipul de problema/afisare ; Adica daca se face reprezentarea tip plan sau toroidala
     int numar_linii, numar_coloane, Etape;
     int** matrice = NULL;
     char value;
+    int maximpopulatie = 0;
+    int afisareIteratie = 0;
+
+    FILE* outStream = stdout;
 
     //  BEGIN citeste_variabile
     if (argc < 2)
     {
         printf("Alege Tip plan:\nPlan planar : 'P' sau 'p'\nPlan toroidal : 'T' sau 't'\n");
         scanf_s("\n%c", &value, 1);
-        switch (value)
-        {
-        case 'p':
-        case 'P':
-            Tip_plan = Planar;
-            break;
-        case 't':
-        case 'T':
-            Tip_plan = Tiroidala;
-            break;
-        default:
-            Tip_plan = Nimic;
-            printf("Tip plan invalid\n");
+        Tip_plan = ReadTipSimulare(value);
+        if (Tip_plan == Nimic)
             return 0;
-        }
+
+        printf("Afisare la fiecare iteratie? NU:0 DA:1\n");
+        scanf_s("\n%d", &afisareIteratie);
 
         printf("Numar lini?\nNumar coloane?\nEtape?\n");
         scanf_s("\n%d %d %d", &numar_linii, &numar_coloane, &Etape);
@@ -164,9 +194,7 @@ int RunNewImplementation(int argc, char** argv)
         {
             return 0;
         }
-        matrice = (int**)malloc(sizeof(int*) * numar_linii);
-        for (int pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
-            matrice[pozitie_linie] = (int*)malloc(sizeof(int) * numar_coloane);
+        matrice = NewMatrice(numar_linii, numar_coloane);
 
         for (int pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
             for (int pozitie_coloana = 0; pozitie_coloana < numar_coloane; pozitie_coloana++)
@@ -176,16 +204,77 @@ int RunNewImplementation(int argc, char** argv)
                 scanf_s(" %d", &value);
                 matrice[pozitie_linie][pozitie_coloana] = value;
             }
+
+        // Calculare Populatia initiala
+        for (int i = 0; i < numar_linii; i++)
+            for (int j = 0; j < numar_coloane; j++)
+                if (matrice[i][j] == 1)
+                    maximpopulatie++;
     }
     else
     {
-        return 0;
+        FILE* file = NULL;
+        const char* filePath = argv[1];
+        errno_t error = fopen_s(&file, filePath, "r");
+        if (error != 0 || file == NULL)
+        {
+            return 0;
+        }
+        
+        error = fscanf_s(file, "%c %d %d %d %d", 
+            &value,1,
+            & afisareIteratie, 
+            &numar_linii, 
+            &numar_coloane, 
+            &Etape
+        );
+        if (EOF == error)
+        {
+            return 0;
+        }
+
+        Tip_plan = ReadTipSimulare(value);
+        if (Tip_plan == Nimic)
+            return 0;
+
+        matrice = NewMatrice(numar_linii, numar_coloane);
+        for (int pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
+        {
+            char value = 0;
+            fscanf_s(file, "\n");
+            for (int pozitie_coloana = 0; pozitie_coloana < numar_coloane-1; pozitie_coloana++)
+            {
+                value = 0;
+                fscanf_s(file, "%c ", &value, 1);
+                matrice[pozitie_linie][pozitie_coloana] = value;
+            }
+            value = 0;
+            fscanf_s(file, "%c", &value, 1);
+            matrice[pozitie_linie][numar_coloane > 0 ? numar_coloane -1 : 0] = value;
+        }
+
+        if (argc > 2)
+        {
+            const char* filePath = argv[2];
+            if (fopen_s(&outStream, filePath, "w+") < 0)
+            {
+                return 0;
+            }
+            if (outStream == NULL)
+            {
+                return 0;
+            }
+        }
+
     }
     // END citeste_variabile
 
+    RuleazaSimulare(matrice, numar_linii, numar_coloane, Etape,Tip_plan,afisareIteratie, outStream);
+    AfisareMatrice(matrice, numar_linii, numar_coloane, outStream);
 
-    for (int pozitie_linie = 0; pozitie_linie < numar_linii; pozitie_linie++)
-        free(matrice[pozitie_linie]);
-    free(matrice);
-    return 0;
+    if (outStream != stdout)
+        fclose(outStream);
+
+    FreeMatrice(matrice, numar_linii);
+    return 1;
 }

@@ -1,3 +1,3 @@
 #pragma once
 
-int RunNewImplementation(int argc, char** argv);
+int RunNewImplementation(int argc,const char**const argv);

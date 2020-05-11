@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdio.h>
+
 enum TipCelula
 {
     CelulaMoarta = 0,
@@ -16,8 +18,10 @@ typedef enum TipSimulare
 } Simulare;
 
 
-void nimic(char** matrice, int i, int j);
-int VerificaCelula(char** matrice, int i, int j);
-void VerificaViata(char** matrice, int i, int j, int vieti);
-void VerificaCentru(char** matrice, int linii, int coloane);
-void PregatesteUrmatoareaSimulare(char** matrice, int linii, int coloane);
+void nimic(int** matrice, int i, int j);
+int VerificaCelula(int** matrice, int i, int j);
+void VerificaViata(int** matrice, int i, int j, int vieti);
+void VerificaCentru(int** matrice, int linii, int coloane);
+void PregatesteUrmatoareaSimulare(int** matrice, int linii, int coloane);
+
+void AfisareMatrice(int** matrice, int linii, int coloane,FILE*out);
